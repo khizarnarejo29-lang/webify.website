@@ -60,6 +60,68 @@
     });
   } else reveals.forEach((el) => el.classList.add("in"));
 
+
+  /* ---------- Scroll progress bar ---------- */
+  const bar = document.querySelector(".progress");
+  if (bar) {
+    let ticking = false;
+    const upd = () => {
+      const h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.setProperty("--p", h > 0 ? (scrollY / h).toFixed(4) : 0);
+      ticking = false;
+    };
+    addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  }
+
+  /* ---------- Pointer effects (desktop only) ---------- */
+  const fine = matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (fine) {
+    // Hero visual 3D tilt
+    const hv = document.querySelector(".hv");
+    const hero = document.querySelector(".hero");
+    if (hv && hero) {
+      hero.addEventListener("pointermove", (e) => {
+        const r = hv.getBoundingClientRect();
+        const x = (e.clientX - (r.left + r.width / 2)) / r.width;
+        const y = (e.clientY - (r.top + r.height / 2)) / r.height;
+        hv.style.setProperty("--ry", `${(x * 10).toFixed(2)}deg`);
+        hv.style.setProperty("--rx", `${(-y * 10).toFixed(2)}deg`);
+      });
+      hero.addEventListener("pointerleave", () => { hv.style.setProperty("--ry", "0deg"); hv.style.setProperty("--rx", "0deg"); });
+    }
+
+    // Card tilt + spotlight
+    const cards = document.querySelectorAll(".service, .feature, .plan:not(.plan--featured), .commit__item, .work__item, .industry, .ccard, .mvv__card, .review, .svc-card, .why__card");
+    cards.forEach((el) => {
+      el.classList.add("spot");
+      el.addEventListener("pointerenter", () => { el.style.transition = "transform .15s ease-out, box-shadow .35s, border-color .35s"; });
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const px = e.clientX - r.left, py = e.clientY - r.top;
+        el.style.setProperty("--mx", `${px}px`);
+        el.style.setProperty("--my", `${py}px`);
+        const rx = (py / r.height - 0.5) * -7, ry = (px / r.width - 0.5) * 7;
+        el.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-6px)`;
+      });
+      el.addEventListener("pointerleave", () => {
+        el.style.transition = "transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .35s, border-color .35s";
+        el.style.transform = "";
+        el.style.setProperty("--mx", "-999px");
+      });
+    });
+
+    // Magnetic buttons
+    document.querySelectorAll(".btn--lg, .nav__cta").forEach((b) => {
+      b.addEventListener("pointermove", (e) => {
+        const r = b.getBoundingClientRect();
+        const x = e.clientX - (r.left + r.width / 2), y = e.clientY - (r.top + r.height / 2);
+        b.style.transform = `translate(${(x * 0.22).toFixed(1)}px, ${(y * 0.3).toFixed(1)}px)`;
+      });
+      b.addEventListener("pointerleave", () => { b.style.transform = ""; });
+    });
+  }
+
   /* ---------- Portfolio filter ---------- */
   document.querySelectorAll(".filter").forEach((btn) =>
     btn.addEventListener("click", () => {

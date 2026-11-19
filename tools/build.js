@@ -211,6 +211,64 @@ const workGrid = (items) => `
     ${items.map((w) => `<div class="work__item reveal" data-cat="${w.cat}">${w.html}<div class="work__meta"><span>${w.label}</span><h4>${w.title}</h4></div></div>`).join("")}
   </div>`;
 
+
+/* ---------------- animated hero visual ---------------- */
+const heroVisual = () => {
+  const orbitIcons = ["website-development", "logo-design", "social-media-marketing", "seo-marketing", "website-design", "google-ads", "video-editing", "business-card-design", "email-marketing", "branding-graphics"];
+  return `
+  <div class="hv" aria-hidden="true">
+    <div class="hv__glow"></div>
+    <div class="hv__orbit hv__orbit--outer">
+      ${orbitIcons.map((slug, i) => { const s = bySlug[slug]; return `<div class="hv__dot" style="--a:${i * 36}deg"><span class="hv__chip" style="--c1:${s.c1};--c2:${s.c2}">${icon(s.icon)}</span></div>`; }).join("")}
+    </div>
+    <div class="hv__orbit hv__orbit--inner"><i></i><i></i><i></i></div>
+    <div class="hv__core"><span class="hv__ring"></span><span class="hv__ring hv__ring--2"></span><span class="hv__logo">W</span></div>
+
+    <div class="win win--site">
+      <div class="win__bar"><span></span><span></span><span></span><div class="win__url"><em class="type">yourbrand.com</em></div></div>
+      <div class="ws">
+        <div class="ws__nav s1"><i class="ws__logo"></i><i></i><i></i><i></i><b></b></div>
+        <div class="ws__hero">
+          <div class="ws__txt"><i class="s2"></i><i class="s2 w2"></i><i class="s3 sm"></i><i class="s3 sm w3"></i><span class="ws__btn s4">Get started</span></div>
+          <div class="ws__img s4z"><span></span></div>
+        </div>
+        <div class="ws__cards"><i class="s5"></i><i class="s6"></i><i class="s7"></i></div>
+      </div>
+      <svg class="cursor" viewBox="0 0 24 24"><path d="M4 2l16 10-7 1.5L9.5 21z"/></svg>
+    </div>
+
+    <div class="win win--logo">
+      <div class="win__bar"><span></span><span></span><span></span></div>
+      <div class="wl">
+        <svg viewBox="0 0 100 100" class="wl__mark"><defs><linearGradient id="hvg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs>
+          <path class="wl__hex" d="M50 6 88 28v44L50 94 12 72V28z"/>
+          <path class="wl__a" d="M32 70 50 28l18 42M39 56h22"/>
+        </svg>
+        <p class="wl__name">BRAND</p>
+        <p class="wl__tag">your tagline</p>
+      </div>
+    </div>
+
+    <div class="win win--rank">
+      <div class="wr__search">${icon('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')}<span class="type type--2">best agency near me</span></div>
+      <div class="wr__list">
+        <div class="wr__row r-a"><b></b><i></i></div>
+        <div class="wr__row r-b"><b></b><i></i></div>
+        <div class="wr__row r-c"><b></b><i></i></div>
+        <div class="wr__row r-me"><span class="wr__pos">#1</span><b>Your Business</b><i></i></div>
+      </div>
+    </div>
+
+    <div class="win win--social">
+      <div class="wsx__head"><span class="wsx__av"></span><i></i></div>
+      <div class="wsx__img"><b>SALE</b><span>50% OFF</span><em class="fh fh1">♥</em><em class="fh fh2">♥</em><em class="fh fh3">♥</em></div>
+      <div class="wsx__acts"><span class="heart">♥</span><span class="cmt">💬</span><span class="likes"><span class="tick"><span>1,204</span><span>1,876</span><span>2,431</span><span>3,092</span></span> likes</span></div>
+      <div class="toast toast--1"><span>👤</span> New follower</div>
+      <div class="toast toast--2"><span>🛒</span> New order</div>
+    </div>
+  </div>`;
+};
+
 /* ---------------- layout ---------------- */
 const navGroups = ["Web", "Design", "Marketing"];
 const megaMenu = () => `
@@ -345,6 +403,7 @@ const layout = ({ url, title, desc, active, body, schema = [] }) => `<!DOCTYPE h
   ${[orgSchema, ...schema].map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n  ")}
 </head>
 <body>
+<div class="progress" aria-hidden="true"></div>
 ${header(active)}
   <main>
 ${body}
@@ -394,9 +453,9 @@ add("/", layout({
     <section class="hero" id="home">
       <div class="hero__bg"><div class="blob blob--1"></div><div class="blob blob--2"></div><div class="blob blob--3"></div><div class="grid-lines"></div></div>
       <div class="container hero__inner">
-        <div class="hero__content">
+        <div class="hero__content hero-par">
           <div class="pill reveal"><span class="pill__dot"></span> Premium Digital Marketing Agency</div>
-          <h1 class="hero__title reveal">We build brands that <span class="serif gradient-text">grow online.</span></h1>
+          <h1 class="hero__title reveal">We build brands that <span class="rot" aria-hidden="true"><span class="rot__w serif gradient-text" style="--d:0s">grow online.</span><span class="rot__w serif gradient-text" style="--d:2.5s">get found.</span><span class="rot__w serif gradient-text" style="--d:5s">sell more.</span><span class="rot__w serif gradient-text" style="--d:7.5s">stand out.</span></span><span class="sr-only">grow online.</span></h1>
           <p class="hero__text reveal">Websites, logos, social media, SEO and ads — everything your business needs to look premium, get found and win more customers. One agency. One team. Real results.</p>
           <div class="hero__actions reveal">
             <a href="/free-audit/" class="btn btn--primary btn--lg">Get a Free Audit ${arrow}</a>
@@ -408,18 +467,8 @@ add("/", layout({
             <li>${check} 100% ownership</li>
           </ul>
         </div>
-        <div class="hero__visual reveal">
-          <div class="mock">
-            <div class="mock__bar"><span></span><span></span><span></span><div class="mock__url">webify.website</div></div>
-            <div class="mock__body">
-              <div class="mock__head"><div><p class="mock__label">Website Traffic</p><p class="mock__value">48,295 <span class="up">▲ 128%</span></p></div><div class="mock__chip">Last 30 days</div></div>
-              <svg class="mock__chart" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6d5dfc" stop-opacity=".35"/><stop offset="1" stop-color="#6d5dfc" stop-opacity="0"/></linearGradient></defs><path d="M0 95 C30 90 45 80 70 78 S110 60 135 64 S175 40 200 38 S250 22 300 8 L300 110 L0 110Z" fill="url(#g1)"/><path class="chart-line" d="M0 95 C30 90 45 80 70 78 S110 60 135 64 S175 40 200 38 S250 22 300 8" fill="none" stroke="#6d5dfc" stroke-width="3" stroke-linecap="round"/></svg>
-              <div class="mock__stats"><div><p>Leads</p><b>1,284</b></div><div><p>Followers</p><b>32.4k</b></div><div><p>Ranking</p><b>#1</b></div></div>
-            </div>
-          </div>
-          <div class="float-card float-card--a"><div class="float-card__icon fc-pink">${icon('<path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/>')}</div><div><b>+2.4k</b><p>New engagements</p></div></div>
-          <div class="float-card float-card--b"><div class="float-card__icon fc-green">${icon('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>')}</div><div><b>Page 1</b><p>on Google</p></div></div>
-          <div class="float-card float-card--c"><div class="stars">★★★★★</div><p>Built to impress.</p></div>
+        <div class="hero-par hero-par--slow">
+          <div class="hero__visual reveal">${heroVisual()}</div>
         </div>
       </div>
     </section>
@@ -435,6 +484,11 @@ add("/", layout({
         ${head2("Our Services", "Everything your business needs to", "shine online", "Twelve services, one dedicated team. Click any service to see exactly what's included.")}
         <div class="services">${services.map(serviceCard).join("")}</div>
       </div>
+    </section>
+
+    <section class="bigtext" aria-hidden="true">
+      <div class="bigtext__row bigtext__row--outline"><div class="bigtext__track">${[0,1].map(()=>["Websites","Branding","Logos","SEO","Social Media","Google Ads","Content","Video"].map(w=>`<span>${w}</span><i></i>`).join("")).join("")}</div></div>
+      <div class="bigtext__row bigtext__row--fill"><div class="bigtext__track">${[0,1].map(()=>["Design","Develop","Market","Grow","Rank","Convert","Scale"].map(w=>`<span>${w}</span><i></i>`).join("")).join("")}</div></div>
     </section>
 
     <section class="section why">
